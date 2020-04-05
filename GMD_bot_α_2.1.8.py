@@ -2,9 +2,10 @@ import os
 import time
 import math
 import random
+import asyncio
+import discord
 import datetime
 import websockets
-import discord, asyncio
 
 client = discord.Client()
 gmdkrw = 100
@@ -62,30 +63,27 @@ async def on_message(message):
                                                        a = -5
                                                        b = 5
 
-                                 if (((now.minute == 00) and (now.second == 00)) or ((now.minute == 30) and (now.second == 00))):
-                                            print ("%s년%s월%s일 %s시%s분%s초" % (now.year,now.month,now.day,now.hour,now.minute,now.second))
-                                            print("---------------------------------")
-                                            print("최소변동값:")       
-                                            print(a)
-                                            print(" ")
-                                            print("최대변동값")
-                                            print(b)
-                                            print(" ")                      
-                                            print("1GMD -> KRW")
-                                            print(gmdkrw)
-                                            print(" ")
-                                            print("1KRW -> GMD")
-                                            print(krwgmd)
-                                            print("---------------------------------")
+                                 if ((now.hour == 23) and (now.minute == 30) and (now.second == 00)):
+                                            embed = discord.Embed(title="%s년%s월%s일 %s시%s분%s초" % (now.year,now.month,now.day,now.hour + 9,now.minute + 30,now.second), description="환율 시장이 개장되었습니다.", color=0x62c1cc)
+                                            embed.set_footer(text="GMD 관련 문의는 稲妻勝廣#3739에 해 주세요.")
 
-                                            embed = discord.Embed(title="%s년%s월%s일 %s시%s분%s초" % (now.year,now.month,now.day,now.hour,now.minute,now.second), description="현재 시각 기준 환율", color=0x62c1cc)
+                                            await message.channel.send(embed=embed)
+
+                                 if ((now.hour == 5) and (now.minute == 30) and (now.second == 00)):
+                                            embed = discord.Embed(title="%s년%s월%s일 %s시%s분%s초" % (now.year,now.month,now.day,now.hour + 9,now.minute + 30,now.second), description="환율 시장이 폐장되었습니다.", color=0x62c1cc)
+                                            embed.set_footer(text="GMD 관련 문의는 稲妻勝廣#3739에 해 주세요.")
+
+                                            await message.channel.send(embed=embed)
+
+                                 if (((now.minute == 00) and (now.second == 00)) or ((now.minute == 30) and (now.second == 00))):
+                                            embed = discord.Embed(title="%s년%s월%s일 %s시%s분%s초" % (now.year,now.month,now.day,now.hour + 9,now.minute + 30,now.second), description="현재 시각 기준 환율", color=0x62c1cc)
                                             embed.set_footer(text="GMD 관련 문의는 稲妻勝廣#3739에 해 주세요.")
                                             embed.add_field(name="1GMD -> KRW ", value=("1GMD = " + str(gmdkrw) + "KRW"), inline=False)
                                             embed.add_field(name="1KRW -> GMD ", value=("1KRW = " + str(krwgmd) + "GMD"), inline=False)
-                                                       
+                                                                  
                                             await message.channel.send(embed=embed)
 
                                             time.sleep(1)
-
+                                                   
 access_token = os.environ["BOT_TOKEN"]                                
 client.run(access_token)
