@@ -87,6 +87,5 @@ async def on_message(message):
 
                                             time.sleep(1)
 
-                                 
-                                 
-client.run("Njk0MDc1ODI3Nzc5Nzk3MDMz.XoGXzg.hC8y5_l5VmTDT9JHWpo3A7fhYGM")
+access_token = os.environ["BOT_TOKEN"]                                
+client.run(access_token)
